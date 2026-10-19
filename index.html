@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kangoo</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#E8FBF6;--card:#fff;--tx:#1D3B34;--g:#4CC35A;--t:#19B5B0;--y:#FFC933;--o:#FF8A2B;--line:rgba(0,0,0,.1);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F2A2A;--card:#173838;--tx:#E6F7F2;--line:rgba(255,255,255,.14)}}
+:root[data-theme="dark"]{--bg:#0F2A2A;--card:#173838;--tx:#E6F7F2;--line:rgba(255,255,255,.14)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:'Fredoka',system-ui,sans-serif;font-size:16px}
+#app{max-width:430px;margin:0 auto;min-height:100vh;position:relative;padding:14px 16px 90px}
+button{font:inherit;color:inherit;cursor:pointer}
+h1,h2,h3{margin:6px 0}
+.card{background:var(--card);border-radius:22px;padding:14px;margin:8px 0;box-shadow:0 4px 0 var(--line)}
+.btn{display:block;width:100%;border:0;border-radius:18px;padding:14px;margin:8px 0;font-size:18px;font-weight:700;color:#fff;background:var(--g);box-shadow:0 5px 0 #2f8f3b;transition:transform .08s}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 #2f8f3b}
+.btn.o{background:var(--o);box-shadow:0 5px 0 #c4650f}.btn.t{background:var(--t);box-shadow:0 5px 0 #0e827e}
+.btn:disabled{background:#aaa;box-shadow:0 5px 0 #888}
+.btn.ghost{background:var(--card);color:var(--tx);box-shadow:0 4px 0 var(--line)}
+.pill{background:var(--card);border-radius:99px;padding:6px 12px;font-weight:600;box-shadow:0 3px 0 var(--line);white-space:nowrap}
+.row{display:flex;gap:8px;align-items:center}.sp{justify-content:space-between}.wrap{flex-wrap:wrap}
+.bar{height:16px;border-radius:99px;background:var(--line);overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--g),var(--y));transition:width .5s}
+.roo{display:inline-block;animation:hop .9s ease-in-out infinite alternate}
+@keyframes hop{to{transform:translateY(-22%) rotate(-7deg)}}
+.big{font-size:96px;line-height:1.1}
+.splash{min-height:92vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;border-radius:28px;background:linear-gradient(#7FE3EE,#C9F5DF,#FFD877);color:#1D3B34;padding:28px}
+.logo{font-size:60px;font-weight:700;color:var(--o);-webkit-text-stroke:8px #fff;paint-order:stroke fill}
+input,textarea{width:100%;padding:12px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--tx);font:inherit;margin:5px 0}
+.seg{display:flex;background:var(--line);border-radius:14px;padding:4px}.seg button{flex:1;border:0;background:none;padding:9px;border-radius:11px;font-weight:600}.seg .on{background:var(--card)}
+.av{width:52px;height:52px;border-radius:50%;border:4px solid transparent;background:var(--card);font-size:28px}.av.on{border-color:var(--y)}
+.err{color:#e03b3b;font-weight:600}
+.map{position:relative;padding:10px 0}
+.stone{display:flex;flex-direction:column;align-items:center;margin:4px 0}
+.big-s{width:92px;height:76px;border-radius:50%;border:0;font-size:34px;background:var(--g);box-shadow:0 8px 0 #2f8f3b;position:relative}
+.big-s.lock{background:#9aa;box-shadow:0 8px 0 #778}.big-s.cur{background:var(--o);box-shadow:0 8px 0 #c4650f}
+.small-s{width:22px;height:16px;border-radius:50%;background:var(--line);margin:6px 0}.small-s.d{background:var(--g)}
+.me{position:absolute;font-size:36px;margin:-34px 0 0 56px;animation:hop .6s ease-in-out infinite alternate}
+.tabs{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;display:flex;background:var(--card);border-top:2px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+.tabs button{flex:1;border:0;background:none;font-size:12px;font-weight:600;padding:4px;border-radius:12px}.tabs button span{display:block;font-size:24px}.tabs .on{background:var(--line)}
+.opt{display:block;width:100%;text-align:left;border:2px solid var(--line);background:var(--card);border-radius:16px;padding:13px;margin:6px 0;font-size:18px;box-shadow:0 3px 0 var(--line)}
+.opt.sel{border-color:var(--t);background:rgba(25,181,176,.15)}.opt.ok{border-color:var(--g);background:rgba(76,195,90,.2)}.opt.bad{border-color:#e03b3b;background:rgba(224,59,59,.15)}
+.chip{border:2px solid var(--line);background:var(--card);border-radius:12px;padding:8px 12px;font-size:17px;box-shadow:0 3px 0 var(--line)}
+.fb{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px));z-index:5}
+.fb.ok{background:#d6f5d9;color:#1d6b27}.fb.bad{background:#ffd9d9;color:#9b2323}
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.mem button{aspect-ratio:1;border-radius:14px;border:0;font-size:20px;background:var(--t);color:#fff;font-weight:600}.mem .up{background:var(--card);color:var(--tx);box-shadow:0 3px 0 var(--line)}.mem .m{background:var(--g);color:#fff}
+.stars{font-size:48px}.pop{animation:pop .6s cubic-bezier(.3,1.6,.5,1)}@keyframes pop{from{transform:scale(0)}}
+.tog{width:52px;height:30px;border-radius:99px;border:0;background:#aaa;position:relative}.tog.on{background:var(--g)}.tog:after{content:'';position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:left .2s}.tog.on:after{left:25px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:#1D3B34;color:#fff;padding:10px 16px;border-radius:99px;z-index:9}
+@media (prefers-reduced-motion:reduce){.roo,.me,.pop{animation:none}}
+</style></head><body><div id="app"></div>
+<script>
+const SK=[['listening','Listening','🎧','Escucha y responde'],['reading','Reading','📖','Lee y comprende'],['grammar','Grammar','🧩','Practica la gramática'],['vocabulary','Vocabulary','🔤','Aprende palabras'],['writing','Writing','✍️','Escribe en inglés'],['speaking','Speaking','🎤','Habla y pronuncia']];
+// [nombre, icono, descripción, palabras, frase, lectura, [preg,ok,mal1,mal2], [gram,resp], orden, [error,ok,alt]]
+const UN=[
+['My World','🌍','Preséntate y habla de tu familia, tu casa y tus amigos.',[['👨‍👩‍👧','family'],['🏠','house'],['🏫','school'],['🧑‍🤝‍🧑','friend']],'My family lives in a small house.','Ana is twelve. She lives with her family in a small house. Her best friend is Leo.',["Who is Ana's best friend?",'Leo','Tom','Sara'],['She ___ twelve years old.','is'],'My best friend is Leo',['He are my friend','He is my friend','He am my friend']],
+['Food & Health','🍎','Comida, hábitos saludables y visitas al médico.',[['🍎','apple'],['💧','water'],['🍞','bread'],['🩺','doctor']],'I eat an apple every day.','Tom wants to be healthy. He drinks water and eats fruit. He plays football three times a week.',['What does Tom drink?','Water','Juice','Milk'],['I ___ water every day.','drink'],'I eat fruit every day',['She eat an apple','She eats an apple','She eating an apple']],
+['Daily Life','☀️','Tu rutina: horarios, transporte y actividades diarias.',[['🍳','breakfast'],['⏰','clock'],['🛏️','bed'],['🚌','bus']],"I eat breakfast at seven o'clock.",'Sara wakes up at six. She eats breakfast and takes the bus. She arrives at school at eight.',['How does Sara go to school?','By bus','By car','On foot'],['She ___ up at six.','wakes'],'I take the bus to school',['I goes to bed','I go to bed','I going to bed']],
+['My City','🏙️','Lugares de la ciudad y cómo llegar a ellos.',[['🛒','market'],['🏥','hospital'],['🌳','park'],['🛣️','street']],'The market is next to the park.','My city has a big park and a busy market. The market is on Main Street. There is a new hospital.',['Where is the market?','On Main Street','Next to the school','Near the river'],['The park ___ big.','is'],'The hospital is near the park',['There is two parks','There are two parks','There am two parks']],
+['Nature','🌿','Animales, plantas y el clima.',[['🦜','bird'],['🌳','tree'],['🌧️','rain'],['🏞️','river']],'The bird sits in the tree.','In the forest there are tall trees and a clear river. Many birds sing in the morning. When it rains they hide.',['When do the birds hide?','When it rains','At night','In summer'],['Birds ___ in the sky.','fly'],'The river is very clean',['The birds is singing','The birds are singing','The birds am singing']],
+['Technology','💻','Dispositivos, internet y comunicación digital.',[['📱','phone'],['💻','computer'],['🌐','internet'],['📷','camera']],'I use my phone every day.','Leo has a new computer. He uses the internet to study English. He talks with friends on his phone.',['What does Leo use to study English?','The internet','A book','A radio'],['He ___ a new computer.','has'],'I send a message to my friend',['She have a phone','She has a phone','She haves a phone']],
+['Travel','✈️','Viajes, transporte y alojamiento.',[['✈️','plane'],['🧳','suitcase'],['🎫','ticket'],['🏨','hotel']],'We take a plane to the beach.','Maria is going on holiday. She packs her suitcase and buys a ticket. She flies to a hotel by the sea.',['Where does Maria stay?','In a hotel','In a tent','With a friend'],['We ___ to the airport by taxi.','go'],'I want to visit a new country',['I am go to Peru','I am going to Peru','I going to Peru']],
+['Future Dreams','🚀','Planes, profesiones y sueños para el futuro.',[['⭐','dream'],['💼','job'],['🔬','scientist'],['🚀','rocket']],'My dream is to be a scientist.','Nico dreams of being a scientist. Next year he will study hard. One day he will travel in a rocket.',['What will Nico do next year?','Study hard','Buy a house','Travel to Mars'],['I ___ be a doctor one day.','will'],'I will travel around the world',['I will to study','I will study','I will studying']]];
+const AVS=['🦘','🐨','🦜','🐢','🦊','🐼'];
+let S={name:'Estudiante',av:'🦘',email:'',guest:true,logged:false,dark:false,sound:true,notif:true,xp:0,coins:0,hearts:5,streak:0,mins:0,last:'',prog:{},accs:{}};
+try{Object.assign(S,JSON.parse(localStorage.getItem('kg')||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem('kg',JSON.stringify(S))}catch(e){}};
+let scr='splash',tab='home',U=0,A=null,R=null,au={reg:true,av:'🦘',err:''},toastMsg='';
+const $=s=>document.querySelector(s),norm=t=>t.toLowerCase().replace(/[^a-z' ]/g,'').trim();
+const done=u=>SK.filter(s=>S.prog[u+'_'+s[0]]!=null).length,open=u=>u==0||done(u-1)==6;
+const cur=()=>{for(let u=0;u<8;u++)if(open(u)&&done(u)<6)return u;return 7};
+const lessons=()=>Object.keys(S.prog).length,gp=()=>lessons()/48,level=()=>lessons()<12?'A1':lessons()<30?'A2':'B1';
+function theme(){document.documentElement.dataset.theme=S.dark?'dark':'light'}
+function say(t){if(!S.sound||!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';speechSynthesis.speak(u)}
+function toast(m){toastMsg=m;render();setTimeout(()=>{toastMsg='';render()},1800)}
+const rot=(arr,s)=>{const r=s%arr.length;return[...arr.slice(r),...arr.slice(0,r)]};
+const shuf=a=>[...a].sort(()=>Math.random()-.5);
+function mc(p,right,wrong,seed,x={}){const o=rot([right,...wrong],seed);return{t:'mc',p,o,a:o.indexOf(right),...x}}
+function build(u,k){const d=UN[u],w=d[3];
+ if(k=='listening')return[mc('Escucha y elige la imagen correcta',w[0][0],[w[1][0],w[2][0]],u,{say:w[0][1],big:1}),{t:'fill',p:'Escucha y completa la frase:\n'+d[4].replace(w[0][1],'_____'),say:d[4],ans:w[0][1]},{t:'mc',p:'Verdadero o falso según el audio:\n«'+d[4].replace(w[0][1],w[1][1])+'»',say:d[4],o:['Verdadero','Falso'],a:1}];
+ if(k=='reading'){const s=d[5].split(/(?<=\.)\s+/);return[mc(d[6][0],d[6][1],[d[6][2],d[6][3]],u,{ctx:d[5]}),{t:'order',p:'Ordena los acontecimientos del texto',ctx:d[5],w:s,join:' '},mc('¿Cuál es la idea principal?',d[2].length?s[0]:'',[s[1],s[2]],u+1,{ctx:d[5]})]}
+ if(k=='grammar')return[{t:'fill',p:'Completa la oración:\n'+d[7][0],ans:d[7][1]},{t:'order',p:'Ordena las palabras para formar la oración',w:d[8].split(' '),join:' '},mc('Corrige el error:\n«'+d[9][0]+'»',d[9][1],[d[9][2],d[9][0].replace(/^\w+/,'Him')],u)];
+ if(k=='vocabulary')return[mc(w[1][0]+'\n¿Cómo se dice en inglés?',w[1][1],[w[0][1],w[2][1]],u+1,{}),{t:'memory',p:'Memory Game: une cada imagen con su palabra',pairs:w},mc('Clasifica: ¿qué palabra pertenece a «'+d[0]+'»?',w[3][1],[UN[(u+1)%8][3][0][1],UN[(u+2)%8][3][0][1]],u+2)];
+ if(k=='writing')return[{t:'write',p:'Escribe una oración en inglés con «'+w[0][1]+'» (mín. 3 palabras)',min:3},{t:'write',p:w[1][0]+'\nDescribe esta imagen en inglés (mín. 4 palabras)',min:4},{t:'write',p:'Escribe un párrafo corto sobre «'+d[0]+'» (mín. 12 palabras)',min:12}];
+ return[{t:'speak',p:'Repite la oración',target:d[4]},{t:'speak',p:'Lee el texto en voz alta',target:d[5].split(/(?<=\.)\s+/)[0]},{t:'speak',p:'Responde la pregunta oral usando esta frase',target:d[8]}]}
+function start(u,k){A={u,k,qs:build(u,k),i:0,ok:0,sel:null,fb:null,val:'',built:[],t0:Date.now()};initQ();scr='act';render()}
+function initQ(){const q=A.qs[A.i];A.q=q;A.sel=null;A.fb=null;A.val='';A.built=[];A.heard='';A.pron=null;
+ if(q.t=='order')A.pool=shuf(q.w.map((x,i)=>({x,i})));
+ if(q.t=='memory'){A.cards=shuf(q.pairs.flatMap(p=>[{k:p[1],v:p[0]},{k:p[1],v:p[1]}])).map((c,i)=>({...c,id:i}));A.up=[];A.m=[]}
+ if(q.say)setTimeout(()=>say(q.say),300)}
+function check(){const q=A.q;let ok=false,msg='';
+ if(q.t=='mc')ok=A.sel==q.a,msg='Respuesta: '+q.o[q.a];
+ else if(q.t=='fill')ok=norm(A.val)==q.ans,msg='Respuesta: '+q.ans;
+ else if(q.t=='order'){ok=A.built.map(b=>b.i).join()==q.w.map((_,i)=>i).join();msg='Orden: '+q.w.join(q.join)}
+ else if(q.t=='write'){const n=A.val.trim().split(/\s+/).filter(Boolean).length;ok=n>=q.min;msg='Escribe al menos '+q.min+' palabras (tienes '+n+')'}
+ else if(q.t=='speak'){ok=A.pron>=60;msg='Pronunciación: '+A.pron+'%'}
+ else ok=true;
+ if(ok){A.ok++;if(q.t=='speak')msg='¡Pronunciación: '+A.pron+'%!'}else{if(S.hearts>0)S.hearts--;save()}
+ A.fb={ok,msg:ok?(msg&&q.t=='speak'?msg:'¡Excelente!'):msg};render()}
+function next(){if(S.hearts==0&&!A.fb.ok)return finish();A.i++;if(A.i>=A.qs.length)return finish();initQ();render()}
+function finish(){const{u,k,ok,qs}=A,total=qs.length,sc=Math.round(ok/total*100),stars=sc>=90?3:sc>=60?2:sc>0?1:0,gx=Math.round(sc/2)+(ok==total?10:0),gc=ok*5,key=u+'_'+k;
+ if(sc>(S.prog[key]??-1))S.prog[key]=sc;S.xp+=gx;S.coins+=gc;S.mins+=Math.max(1,Math.min(60,Math.ceil((Date.now()-A.t0)/60000)));
+ const f=d=>d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(),n=new Date(),y=new Date(Date.now()-864e5);
+ if(S.last!=f(n)){S.streak=S.last==f(y)?S.streak+1:1;S.last=f(n)}
+ save();R={sc,stars,gx,gc,u,k,out:S.hearts==0};scr='res';render()}
+function listen(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){A.nosr=1;return render()}
+ const r=new SR();r.lang='en-US';r.onresult=e=>{A.heard=e.results[0][0].transcript;const t=norm(A.q.target).split(' '),h=norm(A.heard).split(' ');A.pron=Math.round(t.filter(w=>h.includes(w)).length/t.length*100);A.rec=0;render()};r.onerror=r.onend=()=>{if(A.rec){A.rec=0;render()}};A.rec=1;try{r.start()}catch(e){A.rec=0}render()}
+function flip(id){if(A.fb||A.up.length>=2||A.up.includes(id)||A.m.includes(A.cards[id].k))return;A.up.push(id);render();
+ if(A.up.length==2){const[a,b]=A.up.map(i=>A.cards[i]);if(a.k==b.k){A.m.push(a.k);A.up=[];if(A.m.length==4)setTimeout(check,500)}else setTimeout(()=>{A.up=[];render()},800);render()}}
+const bar=v=>`<div class="bar"><i style="width:${Math.round(v*100)}%"></i></div>`;
+const pills=()=>`<div class="row wrap"><span class="pill">🔥 ${S.streak}</span><span class="pill">⭐ ${S.xp} XP</span><span class="pill">🪙 ${S.coins}</span><span class="pill">❤️ ${S.hearts}</span></div>`;
+function tabs(){return`<div class="tabs">${[['home','🏠','Inicio'],['map','🗺️','Mapa'],['profile','👤','Perfil'],['set','⚙️','Ajustes']].map(t=>`<button class="${tab==t[0]?'on':''}" onclick="tab='${t[0]}';scr='main';render()"><span>${t[1]}</span>${t[2]}</button>`).join('')}</div>`}
+function vSplash(){return`<div class="splash"><div class="roo big">🦘</div><div class="logo">Kangoo</div><p style="font-size:18px">Learn English, Jump Higher</p><div style="width:100%;margin-top:30px"><button class="btn o" onclick="scr=S.logged?'main':'auth';render()">Comenzar</button></div></div>`}
+function vAuth(){return`<div style="text-align:center"><span class="roo" style="font-size:64px">🦘</span><h2>¡Bienvenido a Kangoo!</h2></div>
+<div class="seg"><button class="${au.reg?'on':''}" onclick="au.reg=true;au.err='';render()">Crear cuenta</button><button class="${au.reg?'':'on'}" onclick="au.reg=false;au.err='';render()">Iniciar sesión</button></div>
+${au.reg?`<input id="nm" placeholder="Tu nombre"><p>Elige tu avatar</p><div class="row wrap">${AVS.map(a=>`<button class="av ${au.av==a?'on':''}" onclick="au.av='${a}';render()">${a}</button>`).join('')}</div>`:''}
+<input id="em" type="email" placeholder="Correo"><input id="pw" type="password" placeholder="Contraseña">
+<div class="err">${au.err}</div><button class="btn" onclick="doAuth()">${au.reg?'Crear cuenta':'Iniciar sesión'}</button>
+<button class="btn t" onclick="S.name=($('#nm')?.value.trim())||'Invitado';S.av=au.av;S.guest=true;S.logged=true;save();scr='main';render()">Continuar como invitado</button>`}
+function doAuth(){const n=$('#nm')?.value.trim()||'',e=$('#em').value.trim(),p=$('#pw').value;
+ if(!e.includes('@'))return au.err='Escribe un correo válido',render();if(p.length<6)return au.err='La contraseña debe tener al menos 6 caracteres',render();
+ if(au.reg){if(S.accs[e])return au.err='Ese correo ya está registrado',render();S.accs[e]={p,n:n||'Estudiante'};S.name=n||'Estudiante';S.av=au.av}
+ else{if(!S.accs[e]||S.accs[e].p!=p)return au.err='Correo o contraseña incorrectos',render();S.name=S.accs[e].n}
+ S.email=e;S.guest=false;S.logged=true;save();scr='main';render()}
+function vHome(){const u=cur();return`<div class="row sp"><div><div style="font-size:14px">¡Hola!</div><h2>${S.name} ${S.av}</h2></div><span class="pill" style="background:var(--y);color:#1D3B34">Nivel ${level()}</span></div>${pills()}
+<div class="card" style="text-align:center"><span class="roo" style="font-size:70px">🦘</span><h3>Unidad ${u+1}: ${UN[u][0]}</h3>${bar(done(u)/6)}<small>${done(u)}/6 lecciones</small>
+<button class="btn o" onclick="U=${u};scr='unit';render()">Continuar aprendiendo</button></div>
+<div class="card"><b>Progreso global</b>${bar(gp())}</div>
+<div class="grid2"><button class="btn t" onclick="tab='profile';render()">👤 Perfil</button><button class="btn t" onclick="tab='set';render()">⚙️ Ajustes</button></div>`}
+function vMap(){const c=cur();return`<h2>Mapa de unidades</h2>${bar(gp())}<div class="map">${UN.map((d,u)=>{const o=open(u),off=[0,-60,0,60][u%4];return`<div class="stone" style="transform:translateX(${off}px)">${u?`<div class="small-s ${done(u-1)==6?'d':''}"></div><div class="small-s ${done(u-1)==6?'d':''}"></div>`:''}
+<div style="position:relative"><button class="big-s ${o?(u==c?'cur':''):'lock'}" onclick="${o?`U=${u};scr='unit';render()`:`toast('🔒 Completa la unidad anterior')`}">${o?d[1]:'🔒'}</button>${u==c?'<span class="me">🦘</span>':''}</div><b>${d[0]}</b><small>${done(u)}/6</small></div>`}).join('')}</div>`}
+function vUnit(){const d=UN[U];return`<button class="pill" style="border:0" onclick="scr='main';render()">← Volver</button>
+<div class="card" style="text-align:center"><div style="font-size:80px">${d[1]}</div><h2>${d[0]}</h2><p>${d[2]}</p>${bar(done(U)/6)}</div>
+${SK.map(s=>{const sc=S.prog[U+'_'+s[0]];return`<button class="card row sp" style="width:100%;border:0;text-align:left;font-size:17px" onclick="start(${U},'${s[0]}')"><span class="row"><span style="font-size:32px">${s[2]}</span><span><b>${s[1]}</b><br><small>${s[3]}</small></span></span><span>${sc!=null?'⭐'.repeat(sc>=90?3:sc>=60?2:1)+' '+sc:'▶'}</span></button>`}).join('')}`}
+function vAct(){const q=A.q,fb=A.fb;let body='';
+ const ctx=q.ctx?`<div class="card">${q.ctx}</div>`:'',au_=q.say?`<button class="btn t" onclick="say(${JSON.stringify(q.say).replace(/"/g,'&quot;')})">🔊 Escuchar</button>`:'';
+ if(q.t=='mc')body=q.o.map((o,i)=>`<button class="opt ${fb?(i==q.a?'ok':i==A.sel?'bad':''):A.sel==i?'sel':''}" style="${q.big?'font-size:42px;text-align:center':''}" ${fb?'disabled':`onclick="A.sel=${i};render()"`}>${o}</button>`).join('');
+ if(q.t=='fill')body=`<input value="${A.val}" oninput="A.val=this.value" placeholder="Escribe aquí" ${fb?'disabled':''}>`;
+ if(q.t=='write')body=`<textarea rows="5" oninput="A.val=this.value" placeholder="Write in English..." ${fb?'disabled':''}>${A.val}</textarea>`;
+ if(q.t=='order')body=`<div class="card row wrap" style="min-height:60px">${A.built.map((b,j)=>`<button class="chip" onclick="A.built.splice(${j},1);A.pool.push(${JSON.stringify(b).replace(/"/g,'&quot;')});render()">${b.x}</button>`).join('')}</div><div class="row wrap">${A.pool.map((b,j)=>`<button class="chip" onclick="A.built.push(A.pool.splice(${j},1)[0]);render()">${b.x}</button>`).join('')}</div>`;
+ if(q.t=='memory')body=`<div class="mem">${A.cards.map(c=>`<button class="${A.m.includes(c.k)?'m':A.up.includes(c.id)?'up':''}" onclick="flip(${c.id})">${A.m.includes(c.k)||A.up.includes(c.id)?c.v:'?'}</button>`).join('')}</div>`;
+ if(q.t=='speak')body=`<div class="card" style="font-size:20px;text-align:center">“${q.target}”</div><button class="btn t" onclick="say(${JSON.stringify(q.target).replace(/"/g,'&quot;')})">🔊 Escuchar modelo</button><button class="btn o" onclick="listen()">${A.rec?'🎙️ Escuchando…':'🎤 Hablar'}</button>${A.heard?`<div class="card">Escuché: ${A.heard}<br><b>Pronunciación: ${A.pron}%</b></div>`:''}${A.nosr?`<p class="err">Este navegador no tiene reconocimiento de voz.</p><button class="btn ghost" onclick="A.pron=70;A.heard='(sin micrófono)';A.nosr=0;render()">Practiqué en voz alta</button>`:''}`;
+ const can=q.t=='mc'?A.sel!=null:q.t=='fill'||q.t=='write'?true:q.t=='order'?A.pool.length==0:q.t=='speak'?A.pron!=null:false;
+ return`<div class="row sp"><button class="pill" style="border:0" onclick="scr='unit';render()">✕</button><div style="flex:1">${bar(A.i/A.qs.length)}</div><span class="pill">❤️ ${S.hearts}</span></div>
+<h3 style="white-space:pre-line;margin-top:18px">${q.p}</h3>${ctx}${au_}${body}
+${q.t!='memory'&&!fb?`<div style="height:20px"></div><button class="btn" ${can?'':'disabled'} onclick="check()">Comprobar</button>`:''}
+${fb?`<div class="fb ${fb.ok?'ok':'bad'}"><b style="font-size:20px">${fb.ok?'✅ '+fb.msg:'❌ Casi…'}</b><br>${fb.ok?'':fb.msg}<button class="btn ${fb.ok?'':'o'}" onclick="next()">Continuar</button></div><div style="height:140px"></div>`:''}`}
+function vRes(){const f=R.sc>=90?'¡Increíble! Dominas esta lección.':R.sc>=60?'¡Muy bien! Repite la lección para llegar a 3 estrellas.':'Sigue practicando, ¡cada salto cuenta!';
+ return`<div style="text-align:center"><div class="roo big">🦘</div><h1>${R.out?'Sin corazones 💔':'¡Lección completa!'}</h1><div class="stars pop">${'⭐'.repeat(R.stars)||'☆'}</div><div style="font-size:56px;font-weight:700">${R.sc}<small>/100</small></div>
+<div class="row" style="justify-content:center"><span class="pill">⭐ +${R.gx} XP</span><span class="pill">🪙 +${R.gc}</span></div><p>${R.out?'Recarga tus corazones en Ajustes o prueba otra lección.':f}</p>
+${R.out?`<button class="btn t" onclick="S.hearts=5;save();R.out=0;render()">Recargar corazones</button>`:''}<button class="btn o" onclick="tab='map';scr='main';render()">Continuar el viaje</button></div>`}
+function vProfile(){const bad=['🥉 Primer salto',lessons()>=1,'🔥 Racha 3',S.streak>=3,'🏅 6 lecciones',lessons()>=6,'🏆 Unidad completa',SK.length&&UN.some((_,u)=>done(u)==6),'💎 500 XP',S.xp>=500];
+ const bs=[];for(let i=0;i<bad.length;i+=2)bs.push([bad[i],bad[i+1]]);
+ return`<div class="card" style="text-align:center"><div style="font-size:72px">${S.av}</div><h2>${S.name}</h2><span class="pill">Nivel ${level()}</span>
+<div class="row wrap" style="justify-content:center;margin-top:10px">${AVS.map(a=>`<button class="av ${S.av==a?'on':''}" style="width:42px;height:42px;font-size:22px" onclick="S.av='${a}';save();render()">${a}</button>`).join('')}</div>
+<input id="pn" value="${S.name}" onchange="S.name=this.value.trim()||S.name;save();render()"></div>
+<div class="grid2"><div class="card">⏱️ ${S.mins} min</div><div class="card">⭐ ${S.xp} XP</div><div class="card">🔥 ${S.streak} días</div><div class="card">🏁 ${UN.filter((_,u)=>done(u)==6).length}/8 unidades</div></div>
+<div class="card"><b>Habilidades</b>${SK.map((s,i)=>{const v=UN.map((_,u)=>S.prog[u+'_'+s[0]]).filter(x=>x!=null);const av=v.length?Math.round(v.reduce((a,b)=>a+b,0)/v.length):0;return`<div style="margin:8px 0">${s[2]} ${s[1]} · ${av}%${bar(av/100)}</div>`}).join('')}</div>
+<div class="card"><b>Insignias</b><div class="row wrap" style="margin-top:8px">${bs.map(b=>`<span class="pill" style="opacity:${b[1]?1:.35}">${b[0]}</span>`).join('')}</div></div>`}
+function tg(k){S[k]=!S[k];if(k=='dark')theme();save();render()}
+function vSet(){const r=(l,k)=>`<div class="card row sp">${l}<button class="tog ${S[k]?'on':''}" onclick="tg('${k}')" aria-label="${l}"></button></div>`;
+ return`<h2>Configuración</h2><div class="card row sp">🌐 Idioma<b>Español</b></div>${r('🔊 Sonidos','sound')}${r('🌙 Modo oscuro','dark')}${r('🔔 Notificaciones','notif')}
+<button class="btn ghost" onclick="toast('Soporte: ayuda@kangoo.app')">❓ Ayuda y soporte</button>
+<button class="btn o" onclick="if(confirm('¿Restablecer todo tu progreso?')){S.prog={};S.xp=S.coins=S.streak=S.mins=0;S.hearts=5;S.last='';save();render()}">Restablecer progreso</button>
+<button class="btn t" onclick="S.logged=false;save();au.err='';scr='auth';render()">Cerrar sesión</button>`}
+function render(){theme();const m={home:vHome,map:vMap,profile:vProfile,set:vSet};let h='';
+ if(scr=='splash')h=vSplash();else if(scr=='auth')h=vAuth();else if(scr=='unit')h=vUnit();else if(scr=='act')h=vAct();else if(scr=='res')h=vRes();else h=m[tab]()+tabs();
+ const keep=document.activeElement&&document.activeElement.id;$('#app').innerHTML=h+(toastMsg?`<div class="toast">${toastMsg}</div>`:'');
+ if(keep&&$('#'+keep)&&scr=='auth')$('#'+keep).focus()}
+render();
+</script></body></html>
